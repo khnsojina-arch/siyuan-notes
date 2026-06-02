@@ -6,6 +6,7 @@ kramdown:
   input: GFM
   hard_wrap: false
 permalink: pretty
+excerpt_separator: "<!--more-->"
 defaults:
   - scope:
       path: ""
