@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>{{ page.title | default: site.title | escape }}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{{ '/' | relative_url }}">{{ site.title | default: 'siyuan-notes' }}</a>
+    <nav class="site-nav" aria-label="????">
+      <a href="{{ '/' | relative_url }}">??</a>
+      <a href="https://github.com/khnsojina-arch/siyuan-notes">GitHub</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    {% if page.url != '/' %}
+    <nav class="breadcrumb" aria-label="???">
+      <a href="{{ '/' | relative_url }}">??</a>
+      <span>{{ page.title | default: '??' }}</span>
+    </nav>
+    {% endif %}
+
+    <div class="reading-layout">
+      <article class="note-card">
+        <header class="note-header">
+          <p class="eyebrow">SiYuan Note</p>
+          <h1>{{ page.title | default: site.title }}</h1>
+          {% if page.date %}<time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>{% endif %}
+        </header>
+        <div class="note-content">
+          {{ content }}
+        </div>
+      </article>
+      <aside class="toc" aria-label="??">
+        <div class="toc-title">??</div>
+        <nav id="toc-list"></nav>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    const content = document.querySelector('.note-content');
+    const toc = document.querySelector('#toc-list');
+    if (content && toc) {
+      const headings = [...content.querySelectorAll('h2, h3')];
+      if (headings.length < 2) document.querySelector('.toc')?.classList.add('is-empty');
+      const seen = new Map();
+      headings.forEach((heading) => {
+        const base = heading.textContent.trim().toLowerCase().replace(/\s+/g, '-').replace(/[\\/#?%:<>|"']/g, '');
+        const count = seen.get(base) || 0;
+        seen.set(base, count + 1);
+        heading.id = heading.id || `${base || 'section'}${count ? '-' + count : ''}`;
+        const link = document.createElement('a');
+        link.href = `#${heading.id}`;
+        link.textContent = heading.textContent;
+        link.className = heading.tagName.toLowerCase();
+        toc.appendChild(link);
+      });
+    }
+  </script>
+</body>
+</html>

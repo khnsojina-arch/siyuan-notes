@@ -1,0 +1,17 @@
+title: siyuan-notes
+description: Published SiYuan notes
+lang: zh-CN
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+permalink: pretty
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+  - scope:
+      path: "content/posts"
+    values:
+      layout: default
